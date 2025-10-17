@@ -1,0 +1,17 @@
+{
+  "name": "farm-management-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Comprehensive farm management system - monorepo",
+  "scripts": {
+    "build": "npm --prefix apps/api run build && npm --prefix services/iot run build && npm --prefix packages/db run build && npm --prefix apps/web run build",
+    "dev:api": "npm --prefix apps/api run dev",
+    "dev:iot": "npm --prefix services/iot run dev",
+    "dev:web": "npm --prefix apps/web run dev",
+    "db:generate": "npm --prefix packages/db run generate",
+    "db:migrate": "npm --prefix packages/db run migrate"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

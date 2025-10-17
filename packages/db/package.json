@@ -1,0 +1,23 @@
+{
+  "name": "@farm/db",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "generate": "prisma generate",
+    "migrate": "prisma migrate dev --name init",
+    "build": "tsc -p tsconfig.json",
+    "prepare": "prisma generate"
+  },
+  "dependencies": {
+    "prisma": "^5.19.0",
+    "@prisma/client": "^5.19.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  },
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  }
+}

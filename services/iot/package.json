@@ -1,0 +1,21 @@
+{
+  "name": "@farm/iot-service",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "mqtt": "^5.10.1",
+    "zod": "^3.23.8",
+    "@farm/db": "file:../../packages/db"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.4.0"
+  }
+}

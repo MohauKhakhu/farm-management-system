@@ -1,0 +1,276 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Sex {
+  MALE
+  FEMALE
+}
+
+enum AnimalStatus {
+  ACTIVE
+  SOLD
+  DECEASED
+}
+
+enum InventoryCategory {
+  FEED
+  MEDICINE
+  EQUIPMENT
+  SUPPLIES
+}
+
+enum DiseaseStatus {
+  OPEN
+  CONTAINED
+  CLOSED
+}
+
+enum AlertSeverity {
+  INFO
+  WARN
+  CRITICAL
+}
+
+enum AlertType {
+  HEALTH
+  ENVIRONMENT
+  INVENTORY
+  SYSTEM
+}
+
+model User {
+  id        String    @id @default(uuid())
+  email     String    @unique
+  password  String
+  name      String
+  roles     UserRole[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Role {
+  id    String     @id @default(uuid())
+  name  String     @unique
+  users UserRole[]
+}
+
+model UserRole {
+  userId String
+  roleId String
+  user   User   @relation(fields: [userId], references: [id])
+  role   Role   @relation(fields: [roleId], references: [id])
+  @@id([userId, roleId])
+}
+
+model Species {
+  id    String  @id @default(uuid())
+  name  String  @unique
+  breed String?
+  animals Animal[]
+  vaccines Vaccine[]
+  vaccinationSchedules VaccinationSchedule[]
+}
+
+model Animal {
+  id         String       @id @default(uuid())
+  tag        String       @unique
+  name       String?
+  speciesId  String
+  species    Species      @relation(fields: [speciesId], references: [id])
+  sex        Sex
+  birthDate  DateTime
+  sireId     String?      @db.Uuid
+  damId      String?      @db.Uuid
+  status     AnimalStatus @default(ACTIVE)
+  weights    WeightLog[]
+  vaccinations VaccinationRecord[]
+  treatments  Treatment[]
+  alerts     Alert[]
+  sensorReadings SensorReading[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  @@index([speciesId])
+}
+
+model WeightLog {
+  id        String   @id @default(uuid())
+  animalId  String
+  animal    Animal   @relation(fields: [animalId], references: [id])
+  measuredAt DateTime @default(now())
+  weightKg  Float
+  notes     String?
+  @@index([animalId, measuredAt])
+}
+
+model Vaccine {
+  id       String  @id @default(uuid())
+  name     String  @unique
+  speciesId String?
+  species   Species? @relation(fields: [speciesId], references: [id])
+  manufacturer String?
+  schedules VaccinationSchedule[]
+  records   VaccinationRecord[]
+}
+
+model VaccinationSchedule {
+  id         String   @id @default(uuid())
+  speciesId  String
+  species    Species  @relation(fields: [speciesId], references: [id])
+  vaccineId  String
+  vaccine    Vaccine  @relation(fields: [vaccineId], references: [id])
+  ageDays    Int      // recommended age in days
+  repeatDays Int?     // repeat interval in days
+}
+
+model VaccinationRecord {
+  id             String   @id @default(uuid())
+  animalId       String
+  animal         Animal   @relation(fields: [animalId], references: [id])
+  vaccineId      String
+  vaccine        Vaccine  @relation(fields: [vaccineId], references: [id])
+  scheduledDate  DateTime
+  administeredAt DateTime?
+  dose           String?
+  administeredBy String?
+  notes          String?
+  @@index([animalId, scheduledDate])
+}
+
+model Treatment {
+  id        String   @id @default(uuid())
+  animalId  String
+  animal    Animal   @relation(fields: [animalId], references: [id])
+  date      DateTime @default(now())
+  medication String
+  dose      String?
+  veterinarian String?
+  notes     String?
+  @@index([animalId, date])
+}
+
+model InventoryItem {
+  id           String             @id @default(uuid())
+  name         String
+  category     InventoryCategory
+  unit         String
+  reorderLevel Float              @default(0)
+  lots         StockLot[]
+  orderItems   PurchaseOrderItem[]
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  @@unique([name, category])
+}
+
+model StockLot {
+  id         String        @id @default(uuid())
+  itemId     String
+  item       InventoryItem @relation(fields: [itemId], references: [id])
+  quantity   Float
+  batchNo    String?
+  expiryDate DateTime?
+  receivedAt DateTime      @default(now())
+  @@index([itemId, expiryDate])
+}
+
+model Supplier {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  contact   String?
+  email     String?
+  phone     String?
+  orders    PurchaseOrder[]
+}
+
+model PurchaseOrder {
+  id          String            @id @default(uuid())
+  supplierId  String
+  supplier    Supplier          @relation(fields: [supplierId], references: [id])
+  status      String            @default("DRAFT")
+  orderedAt   DateTime?
+  receivedAt  DateTime?
+  items       PurchaseOrderItem[]
+}
+
+model PurchaseOrderItem {
+  id       String        @id @default(uuid())
+  orderId  String
+  order    PurchaseOrder @relation(fields: [orderId], references: [id])
+  itemId   String
+  item     InventoryItem @relation(fields: [itemId], references: [id])
+  quantity Float
+  price    Float
+}
+
+model VisitorLog {
+  id        String   @id @default(uuid())
+  name      String
+  purpose   String?
+  badgeId   String?
+  arrivedAt DateTime @default(now())
+  departedAt DateTime?
+}
+
+model WasteLog {
+  id        String   @id @default(uuid())
+  type      String
+  quantity  Float
+  method    String?
+  loggedAt  DateTime @default(now())
+  location  String?
+}
+
+model SanitationAction {
+  id        String   @id @default(uuid())
+  location  String
+  action    String
+  performedAt DateTime @default(now())
+  notes     String?
+}
+
+model DiseaseEvent {
+  id        String        @id @default(uuid())
+  name      String
+  status    DiseaseStatus @default(OPEN)
+  startedAt DateTime      @default(now())
+  endedAt   DateTime?
+  notes     String?
+}
+
+model SensorDevice {
+  id        String    @id @default(uuid())
+  name      String
+  topic     String    @unique
+  type      String?
+  location  String?
+  readings  SensorReading[]
+}
+
+model SensorReading {
+  id        String   @id @default(uuid())
+  deviceId  String
+  device    SensorDevice @relation(fields: [deviceId], references: [id])
+  metric    String
+  value     Float
+  unit      String?
+  recordedAt DateTime @default(now())
+  relatedAnimalId String?
+  animal    Animal? @relation(fields: [relatedAnimalId], references: [id])
+  @@index([deviceId, recordedAt])
+}
+
+model Alert {
+  id        String       @id @default(uuid())
+  type      AlertType
+  severity  AlertSeverity @default(INFO)
+  message   String
+  createdAt DateTime      @default(now())
+  resolvedAt DateTime?
+  relatedAnimalId String?
+  animal    Animal? @relation(fields: [relatedAnimalId], references: [id])
+}
