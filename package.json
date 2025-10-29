@@ -63,5 +63,13 @@
     "inventory"
   ],
   "author": "Farm Management System",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MohauKhakhu/farm-management-system.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MohauKhakhu/farm-management-system/issues"
+  },
+  "homepage": "https://github.com/MohauKhakhu/farm-management-system#readme"
 }
