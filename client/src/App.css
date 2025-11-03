@@ -1,0 +1,13 @@
+﻿.app {
+  text-align: center;
+}
+
+.header {
+  background-color: #2e7d32;
+  padding: 20px;
+  color: white;
+}
+
+main {
+  padding: 20px;
+}
