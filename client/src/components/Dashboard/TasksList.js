@@ -1,4 +1,5 @@
 import React from 'react';
+import { Typography } from '@mui/material';
 import { List, ListItem, ListItemText, ListItemIcon, Chip, Box } from '@mui/material';
 import { Task, Schedule, CheckCircle } from '@mui/icons-material';
 
