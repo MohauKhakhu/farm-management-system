@@ -22,7 +22,7 @@ import {
   Warning as WarningIcon,
   Task as TaskIcon,
   Baby as BirthIcon,
-  WbSunny as WeatherIcon,
+  // Remove this line: WbSunny as WeatherIcon, // This is unused
 } from '@mui/icons-material';
 import { useQuery } from 'react-query';
 import { useFarm } from '../../contexts/FarmContext';
@@ -35,6 +35,8 @@ import AlertsList from '../../components/Dashboard/AlertsList';
 import TasksList from '../../components/Dashboard/TasksList';
 import RecentBirths from '../../components/Dashboard/RecentBirths';
 import PerformanceChart from '../../components/Dashboard/PerformanceChart';
+
+// ... rest of your Dashboard component code remains the same
 
 
 const Dashboard = () => {
