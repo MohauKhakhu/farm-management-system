@@ -213,7 +213,7 @@ const Sidebar = ({ onItemClick }) => {
       {/* Footer */}
       <Box sx={{ p: 2, textAlign: 'center' }}>
         <Typography variant="caption" color="text.secondary">
-          Version 1.0.0
+          jalusi tech 
         </Typography>
       </Box>
     </Box>
