@@ -29,13 +29,14 @@ import { useFarm } from '../../contexts/FarmContext';
 import axios from 'axios';
 
 // Components
+
+// In Dashboard.js - use these import paths:
 import StatCard from '../../components/Dashboard/StatCard';
 import WeatherWidget from '../../components/Dashboard/WeatherWidget';
 import AlertsList from '../../components/Dashboard/AlertsList';
 import TasksList from '../../components/Dashboard/TasksList';
 import RecentBirths from '../../components/Dashboard/RecentBirths';
 import PerformanceChart from '../../components/Dashboard/PerformanceChart';
-
 // ... rest of your Dashboard component code remains the same
 
 
