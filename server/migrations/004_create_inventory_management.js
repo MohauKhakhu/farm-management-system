@@ -62,7 +62,7 @@ exports.up = function(knex) {
       table.date('transaction_date').notNullable();
       table.string('reference_number');
       table.text('notes');
-      table.uuid('performed_by').references('id').inTable('users');
+      table.uuid('performed_by').references('id').inTable('users');8
       table.timestamps(true, true);
     })
     .createTable('purchase_orders', table => {
